@@ -1,12 +1,13 @@
 /*
  * Esta cabezera contiene la estructura base de una caja normal que puede
- * contener un dato.
+ * contener dos datos.
  * Autor: Francisco Enrique Córdova González
  * Última actualización: 17/02/16
  * Contacto: franciscogonzalez1307@gmail.com
  */
 #pragma once
-template <class T> struct caja {
+template <class T, class U> struct caja {
   T var;
-  caja<T> *siguiente;
+  U var_2;
+  caja<T,U> *siguiente;
 };
