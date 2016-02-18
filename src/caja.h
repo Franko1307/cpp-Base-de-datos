@@ -8,5 +8,5 @@
 #pragma once
 template <class T> struct caja {
   T var;
-  *caja<T> siguiente;
+  caja<T> *siguiente;
 };
