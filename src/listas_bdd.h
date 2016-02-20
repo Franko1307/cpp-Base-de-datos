@@ -1,7 +1,6 @@
 #pragma once
 #include "caja_d.h"
 
-enum ENCONTRADO {SI,NO};
 enum DONDE {INICIO, MITAD};
 
 template <class T, class U> struct contenedor {
@@ -11,11 +10,11 @@ template <class T, class U> struct contenedor {
 template <class T, class U = T> class lista_orden_1 {
 private:
   contenedor<T,U> *principio, *anterior;
-  ENCONTRADO encontrado;
+  bool encontrado;
   DONDE donde;
   void buscar(caja_doble<T,U> *var);
 public:
-  lista_orden_1(): principio(NULL), anterior(NULL),encontrado(NO), donde(INICIO){};
+  lista_orden_1(): principio(NULL), anterior(NULL),encontrado(false), donde(INICIO){};
   ~lista_orden_1();
   bool agregar(caja_doble<T,U> *var);
   void pintar();
@@ -28,12 +27,12 @@ template <class T, class U> lista_orden_1<T,U>::~lista_orden_1() {
     delete p;
   }
   anterior = NULL;
-  encontrado = NO;
+  encontrado = false;
   donde = INICIO;
 }
 template <class T, class U> void lista_orden_1<T,U>::buscar(caja_doble<T,U> *q) {
   if (!principio) {
-    encontrado = NO;
+    encontrado = false;
     donde = INICIO;
     anterior = NULL;
     return;
@@ -41,7 +40,7 @@ template <class T, class U> void lista_orden_1<T,U>::buscar(caja_doble<T,U> *q) 
   contenedor<T,U> *p = principio;
   while (p) {
     if (p->valor->var == q->var && p->valor->var_2 == q->var_2) {
-      encontrado = SI;
+      encontrado = true;
       if (p == principio) donde = INICIO;
       else donde = MITAD;
       return;
@@ -53,32 +52,32 @@ template <class T, class U> void lista_orden_1<T,U>::buscar(caja_doble<T,U> *q) 
         anterior = p;
         p = p->siguiente;
       } else {
-        encontrado = NO;
+        encontrado = false;
         if (p == principio) donde = INICIO;
         else donde = MITAD;
         return;
       }
     } else {
-      encontrado = NO;
+      encontrado = false;
       if (principio == p) donde = INICIO;
       else donde = MITAD;
       return;
     }
   }
-  encontrado = NO;
+  encontrado = false;
   donde = MITAD;
 }
 template <class T, class U> bool lista_orden_1<T,U>::agregar(caja_doble<T,U> *q) {
   buscar(q);
-  if (encontrado == SI) return false;
+  if (encontrado) return false;
   contenedor<T,U> *p = new contenedor<T,U>;
   p->valor = q;
-  if (donde == INICIO) {
-    p->siguiente = principio;
-    principio = p;
-  } else {
+  if (donde != INICIO) {
     p->siguiente = anterior->siguiente;
     anterior->siguiente = p;
+  } else {
+    p->siguiente = principio;
+    principio = p;
   }
   return true;
 }
@@ -95,11 +94,11 @@ template <class T, class U> void lista_orden_1<T,U>::pintar() {
 template <class T, class U> class lista_orden_2 {
 private:
   contenedor<T,U> *principio, *anterior;
-  ENCONTRADO encontrado;
+  bool encontrado;
   DONDE donde;
   void buscar(caja_doble<T,U> *var);
 public:
-  lista_orden_2(): encontrado(NO), donde(INICIO), principio(NULL), anterior(NULL){};
+  lista_orden_2(): encontrado(false), donde(INICIO), principio(NULL), anterior(NULL){};
   ~lista_orden_2();
   bool agregar(caja_doble<T,U> *var);
   void pintar();
@@ -113,11 +112,11 @@ template <class T, class U> lista_orden_2<T,U>::~lista_orden_2() {
   }
   anterior = NULL;
   donde = INICIO;
-  encontrado = NO;
+  encontrado = false;
 }
 template <class T, class U> void lista_orden_2<T,U>::buscar(caja_doble<T,U> *q) {
-  if (principio == NULL) {
-    encontrado = NO;
+  if (!principio) {
+    encontrado = false;
     donde = INICIO;
     anterior = NULL;
     return;
@@ -125,7 +124,7 @@ template <class T, class U> void lista_orden_2<T,U>::buscar(caja_doble<T,U> *q) 
   contenedor<T,U> *p = principio;
   while (p) {
     if (p->valor->var == q->var && p->valor->var_2 == q->var_2) {
-      encontrado = SI;
+      encontrado = true;
       if (p == principio) donde = INICIO;
       else donde = MITAD;
     }
@@ -137,32 +136,32 @@ template <class T, class U> void lista_orden_2<T,U>::buscar(caja_doble<T,U> *q) 
         anterior = p;
         p = p->siguiente;
       } else {
-        encontrado = NO;
+        encontrado = false;
         if (principio == p) donde = INICIO;
         else donde = MITAD;
         return;
       }
     } else {
-      encontrado = NO;
+      encontrado = false;
       if (principio == p) donde = INICIO;
       else donde = MITAD;
       return;
     }
   }
-  encontrado = NO;
+  encontrado = false;
   donde = MITAD;
 }
 template <class T, class U> bool lista_orden_2<T,U>::agregar(caja_doble<T,U> *q) {
   buscar(q);
-  if (encontrado == SI) return false;
+  if (encontrado) return false;
   contenedor<T,U> *p = new contenedor<T,U>;
   p->valor = q;
-  if (donde == INICIO) {
-    p->siguiente = principio;
-    principio = p;
-  } else {
+  if (donde != INICIO) {
     p->siguiente = anterior->siguiente;
     anterior->siguiente = p;
+  } else {
+    p->siguiente = principio;
+    principio = p;
   }
   return true;
 }
