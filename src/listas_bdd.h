@@ -2,7 +2,7 @@
 #include "caja_d.h"
 
 enum ENCONTRADO {SI,NO};
-enum DONDE {VACIO, INICIO, MITAD, FINAL};
+enum DONDE {INICIO, MITAD};
 
 template <class T, class U> struct contenedor {
   caja_doble<T,U> *valor;
@@ -15,7 +15,7 @@ private:
   DONDE donde;
   void buscar(caja_doble<T,U> *var);
 public:
-  lista_orden_1(): principio(NULL), anterior(NULL),encontrado(NO), donde(VACIO){};
+  lista_orden_1(): principio(NULL), anterior(NULL),encontrado(NO), donde(INICIO){};
   ~lista_orden_1();
   bool agregar(caja_doble<T,U> *var);
   void pintar();
@@ -29,12 +29,12 @@ template <class T, class U> lista_orden_1<T,U>::~lista_orden_1() {
   }
   anterior = NULL;
   encontrado = NO;
-  donde = VACIO;
+  donde = INICIO;
 }
 template <class T, class U> void lista_orden_1<T,U>::buscar(caja_doble<T,U> *q) {
   if (!principio) {
     encontrado = NO;
-    donde = VACIO;
+    donde = INICIO;
     anterior = NULL;
     return;
   }
@@ -43,7 +43,6 @@ template <class T, class U> void lista_orden_1<T,U>::buscar(caja_doble<T,U> *q) 
     if (p->valor->var == q->var && p->valor->var_2 == q->var_2) {
       encontrado = SI;
       if (p == principio) donde = INICIO;
-      else if (p->siguiente == NULL) donde = FINAL;
       else donde = MITAD;
       return;
     }  else if (p->valor->var < q->var) {
@@ -56,30 +55,25 @@ template <class T, class U> void lista_orden_1<T,U>::buscar(caja_doble<T,U> *q) 
       } else {
         encontrado = NO;
         if (p == principio) donde = INICIO;
-        else if (p->siguiente = NULL) donde = FINAL;
         else donde = MITAD;
         return;
       }
     } else {
       encontrado = NO;
       if (principio == p) donde = INICIO;
-      else if (p->siguiente == NULL) donde = FINAL;
       else donde = MITAD;
       return;
     }
   }
   encontrado = NO;
-  donde = FINAL;
+  donde = MITAD;
 }
 template <class T, class U> bool lista_orden_1<T,U>::agregar(caja_doble<T,U> *q) {
   buscar(q);
   if (encontrado == SI) return false;
   contenedor<T,U> *p = new contenedor<T,U>;
   p->valor = q;
-  if (donde == VACIO) {
-    p->siguiente = NULL;
-    principio = p;
-  } else if (donde == INICIO) {
+  if (donde == INICIO) {
     p->siguiente = principio;
     principio = p;
   } else {
@@ -105,14 +99,26 @@ private:
   DONDE donde;
   void buscar(caja_doble<T,U> *var);
 public:
+  lista_orden_2(): encontrado(NO), donde(INICIO), principio(NULL), anterior(NULL){};
+  ~lista_orden_2();
   bool agregar(caja_doble<T,U> *var);
   void pintar();
 };
-
+template <class T, class U> lista_orden_2<T,U>::~lista_orden_2() {
+  contenedor<T,U> *p = principio;
+  while (principio) {
+    p = principio;
+    principio = p->siguiente;
+    delete p;
+  }
+  anterior = NULL;
+  donde = INICIO;
+  encontrado = NO;
+}
 template <class T, class U> void lista_orden_2<T,U>::buscar(caja_doble<T,U> *q) {
   if (principio == NULL) {
     encontrado = NO;
-    donde = VACIO;
+    donde = INICIO;
     anterior = NULL;
     return;
   }
@@ -121,7 +127,6 @@ template <class T, class U> void lista_orden_2<T,U>::buscar(caja_doble<T,U> *q) 
     if (p->valor->var == q->var && p->valor->var_2 == q->var_2) {
       encontrado = SI;
       if (p == principio) donde = INICIO;
-      else if (p->siguiente == NULL) donde = FINAL;
       else donde = MITAD;
     }
     else if (p->valor->var_2 < q->var_2) {
@@ -134,30 +139,25 @@ template <class T, class U> void lista_orden_2<T,U>::buscar(caja_doble<T,U> *q) 
       } else {
         encontrado = NO;
         if (principio == p) donde = INICIO;
-        else if (p->siguiente == NULL) donde = FINAL;
         else donde = MITAD;
         return;
       }
     } else {
       encontrado = NO;
       if (principio == p) donde = INICIO;
-      else if (!p->siguiente) donde = FINAL;
       else donde = MITAD;
       return;
     }
   }
   encontrado = NO;
-  donde = FINAL;
+  donde = MITAD;
 }
 template <class T, class U> bool lista_orden_2<T,U>::agregar(caja_doble<T,U> *q) {
   buscar(q);
   if (encontrado == SI) return false;
   contenedor<T,U> *p = new contenedor<T,U>;
   p->valor = q;
-  if (donde == VACIO) {
-    p->siguiente = NULL;
-    principio = p;
-  } else if (donde == INICIO) {
+  if (donde == INICIO) {
     p->siguiente = principio;
     principio = p;
   } else {
