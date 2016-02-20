@@ -6,8 +6,8 @@
  * Contacto: franciscogonzalez1307@gmail.com
  */
 #pragma once
-template <class T, class U> struct caja {
+template <class T, class U> struct caja_doble {
   T var;
   U var_2;
-  caja<T,U> *siguiente;
+  caja_doble<T,U> *siguiente;
 };

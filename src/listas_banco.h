@@ -6,7 +6,7 @@ enum DONDE {VACIO, INICIO, MITAD, FINAL};
 
 template <class T, class U> struct contenedor {
   caja<T,U> *valor;
-  contenedor<T> *siguiente;
+  contenedor<T,U> *siguiente;
 };
 template <class T, class U = T> class lista_orden_1 {
 private:
@@ -21,7 +21,7 @@ public:
   //bool borrar(caja<T,U> *var);
   void pintar();
 };
-template <class T, class U> void lista_orden_1::buscar(caja<T,U> *q) {
+template <class T, class U> void lista_orden_1<T,U>::buscar(caja<T,U> *q) {
   if (!principio) {
     encontrado = NO;
     donde = VACIO;
@@ -36,6 +36,8 @@ template <class T, class U> void lista_orden_1::buscar(caja<T,U> *q) {
       else if (p->siguiente == NULL) donde = FINAL;
       else donde = MITAD;
       return;
+    } else if (p->valor->var == q->var) {
+
     } else if (p->valor->var < q->var) {
       anterior = p;
       p = p->siguiente;
@@ -49,4 +51,13 @@ template <class T, class U> void lista_orden_1::buscar(caja<T,U> *q) {
   }
   encontrado = NO;
   donde = FINAL;
+}
+template <class T, class U> bool lista_orden_1<T,U>::agregar(caja<T,U> *q) {
+  buscar(q);
+  if (encontrado == SI) return false;
+  contenedor<T,U> *p = new contenedor<T,U>;
+  p->valor = q;
+  if (donde == VACIO) {
+
+  }
 }
